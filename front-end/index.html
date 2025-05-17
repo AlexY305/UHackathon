@@ -19,11 +19,29 @@
       <div class="speech-bubble">Gotcha!</div>
     </div>
   </div>
+  <!-- Existing content stays the same -->
+
+<!-- Modal -->
+<div id="starterModal" class="modal hidden">
+  <div class="modal-content">
+    <h2>Choose your starter!</h2>
+    <div class="pokeballs">
+      <img src="images/pokeball.jpg" alt="Pokéball 1" onclick="chooseStarter('Bulbasaur')">
+      <img src="images/pokeball.jpg" alt="Pokéball 2" onclick="chooseStarter('Charmander')">
+      <img src="images/pokeball.jpg" alt="Pokéball 3" onclick="chooseStarter('Squirtle')">
+    </div>
+  </div>
+</div>
+
 
   <script>
     function startChat() {
-      alert("Starting chat with PokéBot...");
+      document.getElementById('starterModal').classList.remove('hidden');
       // add redirect or UI swap logic
+    }
+
+    function chooseStarter(pokemon) {
+      alert(`you chose ${pokemon}!`)
     }
   </script>
 </body>
