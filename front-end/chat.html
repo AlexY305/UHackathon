@@ -6,52 +6,94 @@
   <link rel="stylesheet" href="chat.css" />
 </head>
 <body>
-  <!-- Video on the side -->
-  <div class="video-box">
-    <video autoplay loop muted id="bg-video">
-      <source id="videoSource" src="" type="video/mp4" />
-    </video>
+<!-- Video on the side -->
+<div class="video-box">
+  <video autoplay loop muted id="bg-video">
+    <source id="videoSource" src="" type="video/mp4" />
+  </video>
+</div>
+
+<!-- Main chat area -->
+<div class="chat-wrapper">
+  <h2>Ask me about any Pokemon!</h2>
+  <div class="chat-bar">
+    <input type="text" id="userInput" placeholder="Ask anything..." />
+    <button onclick="sendMessage()">➤</button>
   </div>
+</div>
 
-  <!-- Main chat area -->
-  <div class="chat-wrapper">
-    <h2>Ask me about any Pokemon!</h2>
-    <div class="chat-bar">
-      <input type="text" id="userInput" placeholder="Ask anything..." />
-      <button onclick="sendMessage()">➤</button>
-    </div>
-  </div>
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const starter = params.get('starter') || 'squirtle';
 
-  <script>
-    const params = new URLSearchParams(window.location.search);
-    const starter = params.get('starter');
+  const starterData = {
+    Bulbasaur: {
+      color: "#80cb88",
+      video: "videos/B1.mp4"
+    },
+    Charmander: {
+      color: "#f38b35",
+      video: "videos/C1.mp4"
+    },
+    Squirtle: {
+      color: "#7099f3",
+      video: "videos/S2.mp4"
+    }
+  };
 
-    const starterData = {
-      Bulbasaur: {
-        color: "#80cb88",
-        video: "videos/B1.mp4"
-      },
-      Charmander: {
-        color: "#f38b35",
-        video: "videos/C1.mp4"
-      },
-      Squirtle: {
-        color: "#7099f3",
-        video: "videos/S2.mp4"
-      }
+  const data = starterData[starter] || starterData.Bulbasaur;
+
+  // Apply background color and video
+  document.body.style.backgroundColor = data.color;
+  document.getElementById("videoSource").src = data.video;
+  document.getElementById("bg-video").load();
+
+  async function sendMessage() {
+    const input = document.getElementById("userInput");
+    const userMessage = input.value.trim();
+    if (!userMessage) return;
+
+    // Send request to backend
+    try {
+      const response = await fetch("http://localhost:3000/api/pokemon", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message: userMessage,
+          talker: starter.toLowerCase()
+        })
+      });
+
+      const data = await response.json();
+      displayChat(userMessage, data.pokeSpeak, data.translated);
+    } catch (err) {
+      alert("Error talking to your Pokémon assistant.");
+      console.error(err);
+    }
+
+    input.value = "";
+  }
+
+  function displayChat(userText, pokeSpeak, translatedText) {
+    const wrapper = document.querySelector(".chat-wrapper");
+
+    const userBubble = document.createElement("div");
+    userBubble.innerHTML = `<p><strong>You:</strong> ${userText}</p>`;
+    userBubble.style.marginTop = "1rem";
+
+    const botBubble = document.createElement("div");
+    botBubble.innerHTML = `<p><strong>${starter}:</strong> ${pokeSpeak}</p>`;
+
+    const translateBtn = document.createElement("button");
+    translateBtn.textContent = "Translate";
+    translateBtn.onclick = () => {
+      translateBtn.replaceWith(document.createTextNode(`💬 ${translatedText}`));
     };
 
-    const data = starterData[starter] || starterData.Bulbasaur;
-
-    // Apply background color and video
-    document.body.style.backgroundColor = data.color;
-    document.getElementById("videoSource").src = data.video;
-    document.getElementById("bg-video").load();
-
-    function sendMessage() {
-      const msg = document.getElementById("userInput").value;
-      if (msg.trim()) alert(`You said: ${msg}`);
-    }
-  </script>
+    wrapper.appendChild(userBubble);
+    wrapper.appendChild(botBubble);
+    wrapper.appendChild(translateBtn);
+  }
+</script>
 </body>
 </html>
