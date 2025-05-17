@@ -1,0 +1,75 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #78C850; /* default fallback */
+    color: white;
+    position: relative;
+  }
+  
+  /* Chat container */
+  .chat-wrapper {
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 2rem;
+    border-radius: 16px;
+    width: 600px;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    backdrop-filter: blur(8px);
+  }
+  
+  .chat-bar {
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    background-color: rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 0.5rem 1rem;
+  }
+  
+  .chat-bar input {
+    flex: 1;
+    padding: 0.7rem;
+    font-size: 1rem;
+    background: transparent;
+    border: none;
+    color: white;
+    outline: none;
+  }
+  
+  .chat-bar button {
+    background-color: white;
+    color: black;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.2rem;
+  }
+  
+  /* Side video */
+  .video-box {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 200px;
+    height: 120px;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  }
+  
+  .video-box video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  

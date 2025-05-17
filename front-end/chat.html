@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>PokeChat</title>
+  <link rel="stylesheet" href="chat.css" />
+</head>
+<body>
+  <!-- Video on the side -->
+  <div class="video-box">
+    <video autoplay loop muted id="bg-video">
+      <source id="videoSource" src="" type="video/mp4" />
+    </video>
+  </div>
+
+  <!-- Main chat area -->
+  <div class="chat-wrapper">
+    <h2>What's on your mind today?</h2>
+    <div class="chat-bar">
+      <input type="text" id="userInput" placeholder="Ask anything..." />
+      <button onclick="sendMessage()">➤</button>
+    </div>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const starter = params.get('starter');
+
+    const starterData = {
+      Bulbasaur: {
+        color: "#78C850",
+        video: "videos/bulbasaur.mp4"
+      },
+      Charmander: {
+        color: "#F08030",
+        video: "videos/charmander.mp4"
+      },
+      Squirtle: {
+        color: "#6890F0",
+        video: "videos/squirtle.mp4"
+      }
+    };
+
+    const data = starterData[starter] || starterData.Bulbasaur;
+
+    // Apply background color and video
+    document.body.style.backgroundColor = data.color;
+    document.getElementById("videoSource").src = data.video;
+    document.getElementById("bg-video").load();
+
+    function sendMessage() {
+      const msg = document.getElementById("userInput").value;
+      if (msg.trim()) alert(`You said: ${msg}`);
+    }
+  </script>
+</body>
+</html>
