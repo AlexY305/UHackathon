@@ -3,5 +3,5 @@ Robot Servant
 
 - AI Chatbot
 - Fun theme
-- Web
+- Web-based
 - Pokemon-themed
