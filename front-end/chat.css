@@ -57,14 +57,10 @@
   
   /* Side video */
   .video-box {
-    position: absolute;
     top: 20px;
     right: 20px;
-    width: 200px;
-    height: 120px;
-    overflow: hidden;
-    border-radius: 12px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    width: 600px;
+
   }
   
   .video-box video {
