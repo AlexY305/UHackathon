@@ -7,8 +7,7 @@ const router = express.Router();
 
 router.post('/', async (req, res) => {
     const userMessage = req.body.message;
-    const talker = req.body.talker || 'squirtle'; // default to Squirtle if none provided
-
+    const talker = req.body.talker || 'squirtle'; // default talker
     const { pokemonName, requestType } = parseMessage(userMessage);
 
     if (!pokemonName) {
@@ -24,8 +23,12 @@ router.post('/', async (req, res) => {
         const data = response.data;
 
         const typeList = data.types.map(t => t.type.name).join(', ');
-        const height = data.height;
-        const weight = data.weight;
+
+        // Correct conversion formulas
+        const heightInFeet = (data.height * 0.1 * 3.28084).toFixed(1);  // decimeters → meters → feet
+
+        // DIRECT CONVERSION: No intermediate variables that could cause issues
+        const weightInLbs = (data.weight * 0.1 * 2.20462).toFixed(1);   // hectograms → kg → lbs
 
         let translated = "";
 
@@ -34,13 +37,18 @@ router.post('/', async (req, res) => {
                 translated = `${pokemonName} is a ${typeList} type Pokémon!`;
                 break;
             case 'height':
-                translated = `${pokemonName} has a height of ${height}.`;
+            case 'tall':
+            case 'short':
+            case 'size':
+                translated = `${pokemonName} is about ${heightInFeet} feet tall.`;
                 break;
             case 'weight':
-                translated = `${pokemonName} weighs ${weight} units.`;
+            case 'weigh':
+            case 'heavy':
+                translated = `${pokemonName} weighs ${weightInLbs} lbs.`;
                 break;
             default:
-                translated = `${pokemonName}'s basic info:\n• Type: ${typeList}\n• Height: ${height}\n• Weight: ${weight}`;
+                translated = `${pokemonName}'s basic info:\n• Type: ${typeList}\n• Height: ${heightInFeet} ft\n• Weight: ${weightInLbs} lbs`;
         }
 
         const pokeSpeak = getPokemonSpeak(talker);
@@ -59,4 +67,3 @@ router.post('/', async (req, res) => {
 });
 
 module.exports = router;
-//Testing
